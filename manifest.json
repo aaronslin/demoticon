@@ -1,11 +1,11 @@
 {
   "content_scripts": [ {
       "css": [ "demote.css" ],
-      "js": [ "demote.js" ],
-      "matches": [ "*://www.facebook.com/*", "*://web.facebook.com/*", "*://www.messenger.com" ],
+      "js": [ "demote.js", "jquery-3.0.0.min.js" ],
+      "matches": [ "*://www.facebook.com/*", "*://web.facebook.com/*", "*://www.messenger.com/*" ],
       "run_at": "document_idle"
   } ],
   "manifest_version": 2,
   "name": "Demoticon",
-  "version": "0.0",
+  "version": "0.0"
 }
