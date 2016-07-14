@@ -1,7 +1,7 @@
 {
   "content_scripts": [ {
       "css": [ "demote.css" ],
-      "js": [ "demote.js", "jquery-3.0.0.min.js" ],
+      "js": [ "jquery.min.js", "demote.js" ],
       "matches": [ "*://www.facebook.com/*", "*://web.facebook.com/*", "*://www.messenger.com/*" ],
       "run_at": "document_idle"
   } ],

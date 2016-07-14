@@ -1,21 +1,36 @@
+$("body").append('Test');
+
 var CHAT_SELECTOR = "_5rpu" 	// "._5rpu", "._1mf"
 var EMPTY_CHAR = "x" //"⁠"				// <-- THERE'S AN EMPTY CHARACTER IN THIS STRING
 var SMILEY_LIST = [":)", ":("]
+var MAX_SMILEY_LEN = getMaxSmileyLen()
 
-document.getElementById("pagelet_dock").addEventListener("input", function() {
+$("."+CHAT_SELECTOR).on("input", function() {
+//document.getElementById("pagelet_dock").addEventListener("input", function() {
 	if(event.target.classList.contains(CHAT_SELECTOR)) {
 		activeChat = event.srcElement;
 		activeSpan = getInnerSpan(activeChat);
-		activeSpan.style.backgroundColor = "#AAA#";
 		innerText = activeSpan.textContent;
-		console.log(activeSpan);
+		console.log(this, this.selectionStart);
 		if (existsSmiley(innerText)) {
 			typeEmptyChar(activeSpan);
 		}
+		console.log("");
 	}
 });
 // TODO: pagelet_dock seems overly broad and inelegant
+	// TODO: is the chat selector + if redundant?
 // TODO: do you need to check if inner-span data-text==true?
+
+function getMaxSmileyLen() {
+	var maxLen = 0;
+	for (var i=0; i<SMILEY_LIST.length; i++) {
+		if (SMILEY_LIST[i].length > maxLen) {
+			maxLen = SMILEY_LIST[i].length;
+		}
+	}
+	return maxLen;
+}
 
 function getInnerSpan(node) {
 	childSpans = node.getElementsByTagName("span"); 	
@@ -27,13 +42,25 @@ function getInnerSpan(node) {
 function existsSmiley(innerText) {
 	for (var i=0; i<SMILEY_LIST.length; i++) {
 		smiley = SMILEY_LIST[i];
-		smileyIndex = innerText.indexOf(smiley);
+		smileyIndex = innerText.lastIndexOf(smiley);
 		if (smileyIndex >= 0 && (smileyIndex + smiley.length == innerText.length)) {
 			return true;
 		}
 	}
 	return false;
 }
+// BUG: indexOf returns the first occurrence of the smiley!
+
+function typeEmptyChar(element) {
+    var textEvent = document.createEvent('TextEvent'); 
+    textEvent.initTextEvent('textInput', true, true, window, EMPTY_CHAR);;
+    element.dispatchEvent(textEvent); 
+}
+
+
+
+
+// Deprecated
 
 function insertEmptyChar(innerText) {
 	var len = innerText.length;
@@ -50,12 +77,6 @@ function replaceChatText(element, text) {
 }
 // TODO: Race conditions?
 // Event constructors? [2]
-
-function typeEmptyChar(element) {
-    var textEvent = document.createEvent('TextEvent'); 
-    textEvent.initTextEvent('textInput', true, true, window, EMPTY_CHAR);;
-    element.dispatchEvent(textEvent); 
-}
 
 
 
